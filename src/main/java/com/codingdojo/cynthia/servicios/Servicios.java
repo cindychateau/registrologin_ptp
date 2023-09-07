@@ -45,4 +45,23 @@ public class Servicios {
 		
 	}
 	
+	public Usuario login(String email, String password) {
+		//Revisamos que el correo que recibimos esté en BD
+		Usuario usuarioInicioSesion = repoUsuarios.findByEmail(email); //Objeto Usuario o null
+		//Obj(Usuario) nombre: Elena, apellido: De Troya, password: $2sas9mnasoasla
+		if(usuarioInicioSesion == null) {
+			return null;
+		}
+		
+		//Comparamos contraseñas
+		//BCrypt.checkpw(Contra NO encriptada, Contra SI encriptada) -> 
+		//TRUE todo correcto, FALSE si no coinciden
+		if(BCrypt.checkpw(password, usuarioInicioSesion.getPassword())) {
+			return usuarioInicioSesion;
+		}
+		
+		return null;
+		
+	}
+	
 }
